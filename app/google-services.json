@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "862075847070",
+    "firebase_url": "https://bookaih.firebaseio.com",
+    "project_id": "bookaih",
+    "storage_bucket": "bookaih.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:862075847070:android:28f2b43c29b00df4",
+        "android_client_info": {
+          "package_name": "com.example.bookaih"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "862075847070-a7n8qf2g1nontkdcaub30gkatqqiic23.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.bookaih",
+            "certificate_hash": "882c72be9a06ef85583512bc03eedd99feb8f084"
+          }
+        },
+        {
+          "client_id": "862075847070-52cd70mhrdejm5b30g91co9606k9stji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCr2YBL01WJKDZPBL7LHqdK6ZhcyXzAcq0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "862075847070-52cd70mhrdejm5b30g91co9606k9stji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
