@@ -35,5 +35,13 @@ dependencies {
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    //circle imageview
+    implementation 'de.hdodenhof:circleimageview:3.0.0'
+
+    // glide for load images
+    implementation 'com.github.bumptech.glide:glide:4.2.0'
+
+    //upload image library
+    implementation 'com.github.jrvansuita:PickImage:2.2.4'
 }
 apply plugin: 'com.google.gms.google-services'

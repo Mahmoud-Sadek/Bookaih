@@ -9,7 +9,11 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.bookaih.HomePage;
+import com.example.bookaih.adapter.IndividualAdatpter;
+import com.example.bookaih.model.IndividualModel;
 import com.example.bookaih.model.UserModel;
+import com.example.bookaih.model.WeddingModel;
+import com.example.bookaih.utils.MyConstant;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import static com.example.bookaih.utils.MyConstant.FIREBASE_INDIVIDUAL;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_USER;
+import static com.example.bookaih.utils.MyConstant.FIREBASE_WEDDING;
 
 public class FireDatabase {
 
@@ -121,164 +129,23 @@ public class FireDatabase {
             }
         });
     }
-
-    public void addCourse(final CourseModel model) {
+*/
+    public void addIndividual(final IndividualModel model) {
         progressDialog.show();
         String id = reference.push().getKey();
         model.setId(id);
-        reference.child(FIREBASE_COURSES).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(FIREBASE_INDIVIDUAL).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     // Sign in success, update UI with the signed-in user's information
                     progressDialog.dismiss();
-                    Intent intent = new Intent(context, MyCoursesActivity.class);
-                    context.startActivity(intent);
-                    Toast.makeText(context, "Course Added",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Log.w(TAG, "adding course:failure", task.getException());
-                    Toast.makeText(context, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
-    }
-
-    public void addVideo(final String courseId, final VideoModel model) {
-        progressDialog.show();
-        String id = reference.push().getKey();
-        model.setId(id);
-        reference.child(FIREBASE_COURSE_VIDEOS).child(courseId).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(context, MyCoursesActivity.class);
-                    context.startActivity(intent);
-                    ((Activity)context).finish();
-                    Toast.makeText(context, "Video Added",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Log.w(TAG, "adding course:failure", task.getException());
-                    Toast.makeText(context, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
-    }
-    public void editVideo(String courseId, final VideoModel model) {
-        progressDialog.show();
-        String id = model.getId();
-        reference.child(FIREBASE_COURSE_VIDEOS).child(courseId).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(context, MyCoursesActivity.class);
-                    context.startActivity(intent);
-                    Toast.makeText(context, "Edit Success",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Log.w(TAG, "adding course:failure", task.getException());
-                    Toast.makeText(context, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-
-                }
-
-            }
-        });
-    }
-
-    public void deleteCourse(final String id) {
-        progressDialog.show();
-        reference.child(FIREBASE_COURSES).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    reference.child(FIREBASE_COURSE_VIDEOS).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                                // Sign in success, update UI with the signed-in user's information
-                                progressDialog.dismiss();
-                                Intent intent = new Intent(context, MyCoursesActivity.class);
-                                context.startActivity(intent);
-                                Toast.makeText(context, "Course Deleted!!",
-                                        Toast.LENGTH_SHORT).show();
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                progressDialog.dismiss();
-                                Log.w(TAG, "deleting course:failure", task.getException());
-                                Toast.makeText(context, task.getException().getMessage(),
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Log.w(TAG, "deleting course:failure", task.getException());
-                    Toast.makeText(context, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    public void deleteVideo(final String courseId, String id) {
-        progressDialog.show();
-        reference.child(FIREBASE_COURSE_VIDEOS).child(courseId).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    progressDialog.dismiss();
-                    Toast.makeText(context, "Video Deleted!!",
-                            Toast.LENGTH_SHORT).show();
-                    ((Activity)context).finish();
-                } else {
-                    // If sign in fails, display a message to the user.
-                    progressDialog.dismiss();
-                    Log.w(TAG, "deleting Video:failure", task.getException());
-                    Toast.makeText(context, task.getException().getMessage(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-
-    public void editCourse(final CourseModel model) {
-        progressDialog.show();
-        reference.child(FIREBASE_COURSES).child(model.getId()).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    progressDialog.dismiss();
-                    Intent intent = new Intent(context, MyCoursesActivity.class);
-                    context.startActivity(intent);
-                    ((Activity)context).finish();
                     Toast.makeText(context, "Success",
                             Toast.LENGTH_SHORT).show();
                 } else {
                     // If sign in fails, display a message to the user.
                     progressDialog.dismiss();
-                    Log.w(TAG, "editing course:failure", task.getException());
+                    Log.w(TAG, "adding individual:failure", task.getException());
                     Toast.makeText(context, task.getException().getMessage(),
                             Toast.LENGTH_SHORT).show();
 
@@ -287,6 +154,132 @@ public class FireDatabase {
             }
         });
     }
+
+
+    public void editIndividual(IndividualModel model) {
+        progressDialog.show();
+        String id = model.getId();
+        reference.child(FIREBASE_INDIVIDUAL).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "editing :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+    public void deleteIndividual(String id) {
+        progressDialog.show();
+        reference.child(FIREBASE_INDIVIDUAL).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Deleted!!",
+                            Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "deleting :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+
+
+
+
+    public void addWedding(final WeddingModel model) {
+        progressDialog.show();
+        String id = reference.push().getKey();
+        model.setId(id);
+        reference.child(FIREBASE_WEDDING).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "adding individual:failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+    public void editWedding(WeddingModel model) {
+        progressDialog.show();
+        String id = model.getId();
+        reference.child(FIREBASE_WEDDING).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "editing :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+
+    public void deleteWeddig(String id) {
+        progressDialog.show();
+        reference.child(FIREBASE_WEDDING).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Deleted!!",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "deleting :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+    }
+
+/*
 
 
     public void joinCourse(String userID, final CourseModel model) {
@@ -359,17 +352,17 @@ public class FireDatabase {
         });
     }
 
-
-    // this method for get all drivers from database
-    public void getAvaliableCourses(final CoursesCallback callback) {
-        final ArrayList<CourseModel> list = new ArrayList<>();
-        reference.child(MyConstant.FIREBASE_COURSES).addValueEventListener(new ValueEventListener() {
+*/
+    // this method for get all Individual from database
+    public void getIndividuals(final IndividualCallback callback) {
+        final ArrayList<IndividualModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_INDIVIDUAL).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (snapshot.exists()) {
-                            CourseModel model = snapshot.getValue(CourseModel.class);
+                            IndividualModel model = snapshot.getValue(IndividualModel.class);
                             list.add(model);
                         }
                     }
@@ -386,6 +379,36 @@ public class FireDatabase {
         });
     }
 
+
+    // this method for get all Wedding from database
+    public void getWedding(final WeddingCallback callback) {
+        final ArrayList<WeddingModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_WEDDING).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            WeddingModel model = snapshot.getValue(WeddingModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+
+
+/*
     // this method for get all drivers from database
     public void getJoinedCourses(final String userId, final CoursesCallback callback) {
         final ArrayList<CourseModel> list = new ArrayList<>();
@@ -548,4 +571,16 @@ public class FireDatabase {
         void onCallback(UserModel model);
     }
 */
+
+
+    //this callback for get only one user
+    public interface IndividualCallback {
+        void onCallback(ArrayList<IndividualModel> list);
+    }
+
+    //this callback for get only one user
+    public interface WeddingCallback {
+        void onCallback(ArrayList<WeddingModel> list);
+    }
+
 }
