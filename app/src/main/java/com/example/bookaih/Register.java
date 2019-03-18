@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -19,22 +20,30 @@ import android.widget.Toast;
 
 import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
+import com.example.bookaih.firebase.FireStorage;
 import com.example.bookaih.model.UserModel;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
+import com.vansuita.pickimage.bean.PickResult;
+import com.vansuita.pickimage.bundle.PickSetup;
+import com.vansuita.pickimage.dialog.PickImageDialog;
+import com.vansuita.pickimage.listeners.IPickResult;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class Register extends AppCompatActivity implements View.OnClickListener, IPickResult {
 
     private static final int REQUEST_PERMISSIONS = 20;
     private EditText Fname;
     private EditText Lname;
     private EditText Email;
     private EditText password;
+    CircleImageView profileImageCIV;
+
 
     FireAuth auth;
     FireDatabase database;
     UserModel model;
+    FireStorage storage;
+    Bitmap userImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,10 +86,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         Lname = findViewById(R.id.last_name);
         Email = findViewById(R.id.email_reg_page);
         password = findViewById(R.id.password_reg_page);
+        profileImageCIV = findViewById(R.id.profileImageCIV);
 
         auth = new FireAuth(this);
         database = new FireDatabase(this);
         model = new UserModel();
+        storage = new FireStorage(this);
 
 
         reg.setOnClickListener(new View.OnClickListener() {
@@ -89,33 +100,48 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
                 if (validat()) {
                     String email = Email.getText().toString().trim();
-                    String name = Fname.getText().toString().trim()+" " +Lname.getText().toString().trim();
+                    String name = Fname.getText().toString().trim() + " " + Lname.getText().toString().trim();
                     String passworduser = password.getText().toString().trim();
 
                     model.setName(name);
                     model.setEmail(email);
                     model.setPassword(passworduser);
-
-                    auth.signUp(model);
-
-                    //upload to database
-                    //.trime()  is to remove all the white spaces the user could enter
-
-                    /*firebaseAuth.createUserWithEmailAndPassword(email, passworduser).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            //to tell the user that he regsiter operation is success or fail
-                            if (task.isSuccessful()) {
-                                Toast.makeText(Register.this, "Register successfully!", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(Register.this, categories.class));
-                            } else {
-                                Toast.makeText(Register.this, "Register Failed!", Toast.LENGTH_SHORT).show();
+                    if (userImage != null) {
+                       /* final ProgressDialog progressDialog = new ProgressDialog(this);
+                        progressDialog.setMessage("loading...");
+                        progressDialog.show();*/
+                        storage.uploadImage(userImage, new FireStorage.urlCallback() {
+                            @Override
+                            public void onCallback(String url) {
+                                Toast.makeText(Register.this, "url: " + url, Toast.LENGTH_SHORT).show();
+                                model.setImage(url);
+                                auth.signUp(model);
                             }
-                        }
-                    });*/
+                        });
+                    } else {
+                        Toast.makeText(Register.this, "لم يتم إختيار صورة ", Toast.LENGTH_SHORT).show();
+                    }
+
+
                 }
             }
         });
+
+        profileImageCIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PickImageDialog.build(new PickSetup()).show(Register.this);
+            }
+        });
+    }
+
+    @Override
+    public void onPickResult(PickResult pickResult) {
+        if (pickResult.getError() == null) {
+            profileImageCIV.setImageBitmap(pickResult.getBitmap());
+            userImage = pickResult.getBitmap();
+
+        }
 
     }
 
