@@ -1,4 +1,4 @@
-package com.example.bookaih;
+package com.example.bookaih.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.bookaih.adapter.IndividualAdatpter;
-import com.example.bookaih.admin.AddIndivudalActivity;
+import com.example.bookaih.R;
+import com.example.bookaih.adapter.AdminIndividualAdatpter;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.model.IndividualModel;
 
@@ -21,7 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class IndivudalCategory extends AppCompatActivity {
+public class AdminIndividual extends AppCompatActivity {
+
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -30,18 +31,19 @@ public class IndivudalCategory extends AppCompatActivity {
     @BindView(R.id.emptyTV)
     TextView emptyTV;
 
-    IndividualAdatpter adatpter;
-
+    AdminIndividualAdatpter adatpter;
 
 
     FireDatabase database;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_indivudal_category);
+        setContentView(R.layout.activity_admin_individual);
         ButterKnife.bind(this);
 
-        GridLayoutManager layoutManager =  new GridLayoutManager(this,3);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         recycler.setLayoutManager(layoutManager);
 //        adatpter =  new IndividualAdatpter(this,new ArrayList<IndividualModel>());
 //        recycler.setAdapter(adatpter);
@@ -50,14 +52,14 @@ public class IndivudalCategory extends AppCompatActivity {
         database.getAvaliableIndivid(new FireDatabase.IdividualCallback() {
             @Override
             public void onCallback(ArrayList<IndividualModel> list) {
-                if (list.size() == 0){
+                if (list.size() == 0) {
                     loading.setVisibility(View.GONE);
                     emptyTV.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     loading.setVisibility(View.GONE);
                     emptyTV.setVisibility(View.GONE);
                     Collections.reverse(list);
-                    adatpter =  new IndividualAdatpter(getBaseContext(),list);
+                    adatpter = new AdminIndividualAdatpter(getBaseContext(), list);
                     recycler.setAdapter(adatpter);
 
                 }
@@ -67,7 +69,7 @@ public class IndivudalCategory extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_add)
-    void btn_add(){
+    void btn_add() {
         startActivity(new Intent(this, AddIndivudalActivity.class));
     }
 }

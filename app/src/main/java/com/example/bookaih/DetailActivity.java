@@ -35,6 +35,8 @@ public class DetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+//        model = getIntent().getSerializableExtra()
+
         Glide.with(this).load(model.getImage()).into(profileImageCIV);
         item_name.setText(model.getName());
         item_price.setText(model.getPrice());

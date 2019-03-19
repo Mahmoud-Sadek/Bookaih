@@ -1,6 +1,8 @@
 package com.example.bookaih.model;
 
-public class IndividualModel {
+import java.io.Serializable;
+
+public class IndividualModel implements Serializable {
 
     String id="", name="",price = "", image="",description="", flowerType="", paperType="", shreta="";
 

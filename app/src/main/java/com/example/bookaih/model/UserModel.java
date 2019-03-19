@@ -1,6 +1,8 @@
 package com.example.bookaih.model;
 
-public class UserModel {
+import java.io.Serializable;
+
+public class UserModel implements Serializable {
 
     String id="", name="", email="", image="", password="";
 

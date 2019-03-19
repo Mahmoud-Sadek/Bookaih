@@ -13,38 +13,34 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/nameTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="ahmed k.elmoselhy"
-        android:textColor="@color/colorPrimary"
-        android:textSize="16sp"
-        android:layout_gravity="center"
-        android:textStyle="bold"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        />
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/photoIV"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
             android:layout_gravity="center"
             android:padding="10dp"
             android:src="@drawable/image1" />
 
+        <TextView
+            android:id="@+id/nameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="ahmed k.elmoselhy"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
 
     <TextView
         android:id="@+id/priceTxt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="01095475881"
+        android:text="15 SAR"
         android:textSize="13sp"
-        android:paddingLeft="16dp"
         android:textColor="@color/black"
-        android:layout_gravity="center"
         android:layout_marginRight="10dp"
         android:gravity="center"
         android:layout_marginBottom="16dp"

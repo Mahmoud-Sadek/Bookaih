@@ -1,6 +1,5 @@
 package com.example.bookaih.firebase;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -51,7 +50,7 @@ public class FireDatabase {
         progressDialog.setMessage("loading...");
     }
 
-   public void addUser(final UserModel user, final ProgressDialog progressDialog) {
+    public void addUser(final UserModel user, final ProgressDialog progressDialog) {
         reference.child(FIREBASE_USER).child(user.getId()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -78,6 +77,7 @@ public class FireDatabase {
             }
         });
     }
+
     public void addIndividual(final IndividualModel model) {
         progressDialog.show();
         String id = reference.push().getKey();
@@ -113,6 +113,32 @@ public class FireDatabase {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         if (snapshot.exists()) {
                             IndividualModel model = snapshot.getValue(IndividualModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getWedding(final WeddingCallback callback) {
+        final ArrayList<WeddingModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_WEDDING).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            WeddingModel model = snapshot.getValue(WeddingModel.class);
                             list.add(model);
                         }
                     }
@@ -176,9 +202,6 @@ public class FireDatabase {
         });
 
     }
-
-
-
 
 
     public void addWedding(final WeddingModel model) {
@@ -257,4 +280,9 @@ public class FireDatabase {
     public interface IdividualCallback {
         void onCallback(ArrayList<IndividualModel> list);
     }
+
+    public interface WeddingCallback {
+        void onCallback(ArrayList<WeddingModel> list);
+    }
+
 }

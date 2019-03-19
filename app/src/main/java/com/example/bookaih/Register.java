@@ -182,7 +182,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
     @SuppressLint("NewApi")
     private Boolean validat() {
-
         boolean result = false;
         String fname = Fname.getText().toString();
         String lname = Lname.getText().toString();

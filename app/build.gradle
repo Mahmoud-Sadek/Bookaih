@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
+    defaultConfig.applicationId = "com.example.bookaih"
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.bookaih"

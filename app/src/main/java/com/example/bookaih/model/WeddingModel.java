@@ -1,8 +1,10 @@
 package com.example.bookaih.model;
 
-public class WeddingModel {
+import java.io.Serializable;
 
-    String id="", name="",price = "", image="";
+public class WeddingModel implements Serializable {
+
+    String id = "", name = "", price = "", image = "", description = "", flowerType = "", paperType = "", shreta = "";
 
     public WeddingModel() {
     }
@@ -37,5 +39,37 @@ public class WeddingModel {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getFlowerType() {
+        return flowerType;
+    }
+
+    public void setFlowerType(String flowerType) {
+        this.flowerType = flowerType;
+    }
+
+    public String getPaperType() {
+        return paperType;
+    }
+
+    public void setPaperType(String paperType) {
+        this.paperType = paperType;
+    }
+
+    public String getShreta() {
+        return shreta;
+    }
+
+    public void setShreta(String shreta) {
+        this.shreta = shreta;
     }
 }
