@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.bookaih.HomePage;
 import com.example.bookaih.model.IndividualModel;
+import com.example.bookaih.model.OrderModel;
+import com.example.bookaih.model.OrderWeddingModel;
 import com.example.bookaih.model.UserModel;
 import com.example.bookaih.model.WeddingModel;
 import com.example.bookaih.utils.MyConstant;
@@ -24,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.bookaih.utils.MyConstant.FIREBASE_INDIVIDUAL;
+import static com.example.bookaih.utils.MyConstant.FIREBASE_ORDER;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_USER;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_WEDDING;
 
@@ -99,6 +102,80 @@ public class FireDatabase {
 
                 }
 
+            }
+        });
+    }
+    public void addOrderIndividual(final OrderModel model) {
+        progressDialog.show();
+        String id = reference.push().getKey();
+        model.setId(id);
+        reference.child(FIREBASE_ORDER).child(FIREBASE_INDIVIDUAL).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "adding individual:failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+public void addOrderWedding(final OrderWeddingModel model) {
+        progressDialog.show();
+        String id = reference.push().getKey();
+        model.setId(id);
+        reference.child(FIREBASE_ORDER).child(FIREBASE_WEDDING).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "adding individual:failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getWedding(final WeddingCallback callback) {
+        final ArrayList<WeddingModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_WEDDING).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            WeddingModel model = snapshot.getValue(WeddingModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
             }
         });
     }
@@ -256,5 +333,8 @@ public class FireDatabase {
 
     public interface IdividualCallback {
         void onCallback(ArrayList<IndividualModel> list);
+    }
+    public interface WeddingCallback {
+        void onCallback(ArrayList<WeddingModel> list);
     }
 }

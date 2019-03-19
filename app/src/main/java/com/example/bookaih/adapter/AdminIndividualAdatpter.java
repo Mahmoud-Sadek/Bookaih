@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.bookaih.DetailActivity;
 import com.example.bookaih.R;
 import com.example.bookaih.admin.UpdateIndividual;
 import com.example.bookaih.firebase.FireAuth;
@@ -25,15 +24,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class IndividualAdatpter extends RecyclerView.Adapter<IndividualAdatpter.ViewHolder> {
+public class AdminIndividualAdatpter extends RecyclerView.Adapter<AdminIndividualAdatpter.ViewHolder> {
 
-    private Context context;
-
-    private ArrayList<IndividualModel> data;
     FireAuth auth;
     FireDatabase database;
+    private Context context;
+    private ArrayList<IndividualModel> data;
 
-    public IndividualAdatpter(Context context, ArrayList<IndividualModel> data) {
+    public AdminIndividualAdatpter(Context context, ArrayList<IndividualModel> data) {
         this.context = context;
         this.data = data;
         auth = new FireAuth(context);
@@ -54,7 +52,7 @@ public class IndividualAdatpter extends RecyclerView.Adapter<IndividualAdatpter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
+                Intent intent = new Intent(context, UpdateIndividual.class);
                 intent.putExtra("model", data.get(position));
                 context.startActivity(intent);
             }

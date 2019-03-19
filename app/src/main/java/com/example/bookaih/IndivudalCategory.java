@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.bookaih.adapter.IndividualAdatpter;
+import com.example.bookaih.admin.AddIndivudalActivity;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.model.IndividualModel;
 
@@ -65,8 +66,4 @@ public class IndivudalCategory extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.btn_add)
-    void btn_add(){
-        startActivity(new Intent(this,AddIndivudalActivity.class));
-    }
 }

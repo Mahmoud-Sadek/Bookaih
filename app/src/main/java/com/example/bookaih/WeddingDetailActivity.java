@@ -1,25 +1,25 @@
 package com.example.bookaih;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.model.IndividualModel;
 import com.example.bookaih.model.OrderModel;
+import com.example.bookaih.model.OrderWeddingModel;
 import com.example.bookaih.model.WeddingModel;
 import com.example.bookaih.utils.OrderCommentDialog;
+import com.example.bookaih.utils.OrderWeddindCommentDialog;
 import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class DetailActivity extends AppCompatActivity {
+public class WeddingDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.profileImageCIV)
     ImageView profileImageCIV;
@@ -34,9 +34,9 @@ public class DetailActivity extends AppCompatActivity {
     @BindView(R.id.item_paper_type)
     TextView item_paper_type;
 
-    IndividualModel model;
+     WeddingModel model;
 
-    OrderCommentDialog orderCommentDialog;
+    OrderWeddindCommentDialog orderWeddindCommentDialog;
     FireDatabase database;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,8 @@ public class DetailActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         database = new FireDatabase(this);
-        model = (IndividualModel) getIntent().getSerializableExtra("model");
+
+        model = (WeddingModel) getIntent().getSerializableExtra("model");
 
         Glide.with(this).load(model.getImage()).into(profileImageCIV);
         item_name.setText(model.getName());
@@ -59,17 +60,20 @@ public class DetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_cart)
     void btn_add(){
-        orderCommentDialog = new OrderCommentDialog(DetailActivity.this, new OrderCommentDialog.orderCommentAction() {
+        orderWeddindCommentDialog = new OrderWeddindCommentDialog(WeddingDetailActivity.this, new OrderWeddindCommentDialog.orderCommentAction() {
             @Override
-            public void onGetComment(String code) {
-                OrderModel modelOrder = new OrderModel();
-                modelOrder.setComment(code);
+            public void onGetComment(String comment, String date, String place) {
+                OrderWeddingModel modelOrder = new OrderWeddingModel();
+                modelOrder.setComment(comment);
+                modelOrder.setDate(date);
+                modelOrder.setPlace(place);
                 modelOrder.setItemId(model.getId());
                 modelOrder.setUserId(FirebaseAuth.getInstance().getUid());
-                database.addOrderIndividual(modelOrder);
-                orderCommentDialog.dismiss();
+                database.addOrderWedding(modelOrder);
+                orderWeddindCommentDialog.dismiss();
             }
+
         });
-        orderCommentDialog.show();
+        orderWeddindCommentDialog.show();
     }
 }

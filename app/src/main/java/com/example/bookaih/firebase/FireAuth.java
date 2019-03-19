@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.example.bookaih.HomePage;
+import com.example.bookaih.admin.AdminHome;
 import com.example.bookaih.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,24 +35,27 @@ public class FireAuth {
 
     public void signIn(String email, String password) {
         progressDialog.show();
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull final Task<AuthResult> task) {
 
-                if (task.isSuccessful()) {
+        if (email.equals("admin") && password.equals("123456")) {
+            context.startActivity(new Intent(context, AdminHome.class));
+        } else {
+            mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull final Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        Intent intent = new Intent(context, HomePage.class);
+                        context.startActivity(intent);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w(TAG, "signInWithEmailAndPassword:failure", task.getException());
+                        Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
+                    }
 
-                    Intent intent = new Intent(context, HomePage.class);
-                    context.startActivity(intent);
-
-                } else {
-                    // If sign in fails, display a message to the user.
-                    Log.w(TAG, "signInWithEmailAndPassword:failure", task.getException());
-                    Toast.makeText(context, "" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
-                    progressDialog.dismiss();
                 }
+            });
+        }
 
-            }
-        });
 
     }
 

@@ -1,17 +1,16 @@
-package com.example.bookaih;
+package com.example.bookaih.admin;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.example.bookaih.R;
 import com.example.bookaih.adapter.AdminWeddingAdatpter;
-import com.example.bookaih.adapter.WeddingAdatpter;
-import com.example.bookaih.admin.AddWedding;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.model.WeddingModel;
 
@@ -22,7 +21,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class WeddingCategory extends AppCompatActivity {
+public class AdminWedding extends AppCompatActivity {
+
 
     @BindView(R.id.recycler)
     RecyclerView recycler;
@@ -31,7 +31,7 @@ public class WeddingCategory extends AppCompatActivity {
     @BindView(R.id.emptyTV)
     TextView emptyTV;
 
-    WeddingAdatpter adatpter;
+    AdminWeddingAdatpter adatpter;
 
 
     FireDatabase database;
@@ -40,7 +40,7 @@ public class WeddingCategory extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wedding_category);
+        setContentView(R.layout.activity_admin_wedding);
         ButterKnife.bind(this);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
@@ -60,7 +60,7 @@ public class WeddingCategory extends AppCompatActivity {
                     loading.setVisibility(View.GONE);
                     emptyTV.setVisibility(View.GONE);
                     Collections.reverse(list);
-                    adatpter = new WeddingAdatpter(getBaseContext(), list);
+                    adatpter = new AdminWeddingAdatpter(getBaseContext(), list);
                     recycler.setAdapter(adatpter);
 
                 }
@@ -70,6 +70,8 @@ public class WeddingCategory extends AppCompatActivity {
 
     }
 
-
+    @OnClick(R.id.btn_add)
+    void btn_add() {
+        startActivity(new Intent(this, AddWedding.class));
+    }
 }
-

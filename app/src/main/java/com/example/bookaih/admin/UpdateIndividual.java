@@ -1,20 +1,15 @@
-package com.example.bookaih;
+package com.example.bookaih.admin;
 
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.util.Patterns;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.bookaih.adapter.IndividualAdatpter;
+import com.bumptech.glide.Glide;
+import com.example.bookaih.R;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.firebase.FireStorage;
 import com.example.bookaih.model.IndividualModel;
@@ -23,13 +18,12 @@ import com.vansuita.pickimage.bundle.PickSetup;
 import com.vansuita.pickimage.dialog.PickImageDialog;
 import com.vansuita.pickimage.listeners.IPickResult;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class AddIndivudalActivity extends AppCompatActivity implements IPickResult {
+public class UpdateIndividual extends AppCompatActivity implements IPickResult {
+
 
     @BindView(R.id.profileImageCIV)
     ImageView profileImageCIV;
@@ -46,25 +40,36 @@ public class AddIndivudalActivity extends AppCompatActivity implements IPickResu
     @BindView(R.id.edtshreta)
     EditText edtshreta;
 
+
     FireDatabase database;
     FireStorage storage;
     IndividualModel model;
     Bitmap userImage;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_indivudal_layout);
+        setContentView(R.layout.activity_update_individual);
         ButterKnife.bind(this);
-
         database = new FireDatabase(this);
         storage = new FireStorage(this);
-        model = new IndividualModel();
+        model = (IndividualModel) getIntent().getSerializableExtra("model");
+
+        edtName.setText(model.getName());
+        edtDescription.setText(model.getDescription());
+        edtPrice.setText(model.getPrice());
+        edtshreta.setText(model.getShreta());
+        edtType1.setText(model.getFlowerType());
+        edtType2.setText(model.getPaperType());
+        Glide.with(this).load(model.getImage()).into(profileImageCIV);
+
 
     }
 
-    @OnClick(R.id.btnreg_add_page)
-    void btnreg_add_page() {
+
+    @OnClick(R.id.btnreg_edit_page)
+    void btnreg_edit_page() {
         if (!validate()) {
             return;
         }
@@ -84,16 +89,20 @@ public class AddIndivudalActivity extends AppCompatActivity implements IPickResu
                 @Override
                 public void onCallback(String url) {
                     progressDialog.dismiss();
-                    Toast.makeText(AddIndivudalActivity.this, "url: "+url, Toast.LENGTH_SHORT).show();
                     model.setImage(url);
-                    database.addIndividual(model);
+                    database.editIndividual(model);
 
                 }
             });
         } else {
-            Toast.makeText(AddIndivudalActivity.this, "لم يتم إختيار صورة", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "لم يتم إختيار صورة", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @OnClick(R.id.btnreg_delete_page)
+    void btnreg_delete_page() {
+        database.deleteIndividual(model.getId());
     }
 
     @OnClick(R.id.profileImageCIV)
@@ -147,3 +156,4 @@ public class AddIndivudalActivity extends AppCompatActivity implements IPickResu
 
     }
 }
+

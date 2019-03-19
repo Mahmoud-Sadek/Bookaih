@@ -22,7 +22,7 @@ public class categories extends AppCompatActivity {
         wed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(getBaseContext(),WeddingCategory.class));
             }});
 
         indv.setOnClickListener(new View.OnClickListener() {

@@ -14,10 +14,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bookaih.DetailActivity;
 import com.example.bookaih.R;
-import com.example.bookaih.admin.UpdateIndividual;
+import com.example.bookaih.WeddingDetailActivity;
+import com.example.bookaih.admin.UpdateWedding;
 import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
-import com.example.bookaih.model.IndividualModel;
+import com.example.bookaih.model.WeddingModel;
 
 import java.util.ArrayList;
 
@@ -25,15 +26,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class IndividualAdatpter extends RecyclerView.Adapter<IndividualAdatpter.ViewHolder> {
+public class WeddingAdatpter extends RecyclerView.Adapter<WeddingAdatpter.ViewHolder> {
 
-    private Context context;
-
-    private ArrayList<IndividualModel> data;
     FireAuth auth;
     FireDatabase database;
+    private Context context;
+    private ArrayList<WeddingModel> data;
 
-    public IndividualAdatpter(Context context, ArrayList<IndividualModel> data) {
+    public WeddingAdatpter(Context context, ArrayList<WeddingModel> data) {
         this.context = context;
         this.data = data;
         auth = new FireAuth(context);
@@ -54,7 +54,7 @@ public class IndividualAdatpter extends RecyclerView.Adapter<IndividualAdatpter.
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, DetailActivity.class);
+                Intent intent = new Intent(context, WeddingDetailActivity.class);
                 intent.putExtra("model", data.get(position));
                 context.startActivity(intent);
             }
