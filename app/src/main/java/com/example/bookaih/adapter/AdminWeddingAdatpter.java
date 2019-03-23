@@ -58,7 +58,7 @@ public class AdminWeddingAdatpter extends RecyclerView.Adapter<AdminWeddingAdatp
             }
         });
         holder.nameTV.setText(data.get(position).getName());
-        holder.priceTxt.setText(data.get(position).getPrice());
+        holder.priceTxt.setText(data.get(position).getPrice() + " SAR");
         Glide.with(context).load(data.get(position).getImage()).into(holder.photoIV);
 
 

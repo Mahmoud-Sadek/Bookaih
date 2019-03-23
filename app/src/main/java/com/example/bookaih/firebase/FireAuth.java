@@ -1,5 +1,6 @@
 package com.example.bookaih.firebase;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -36,15 +37,14 @@ public class FireAuth {
     public void signIn(String email, String password) {
         progressDialog.show();
 
-        if (email.equals("admin") && password.equals("123456")) {
-            context.startActivity(new Intent(context, AdminHome.class));
-        } else {
+
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull final Task<AuthResult> task) {
                     if (task.isSuccessful()) {
                         Intent intent = new Intent(context, HomePage.class);
                         context.startActivity(intent);
+                        ((Activity)context).finish();
                     } else {
                         // If sign in fails, display a message to the user.
                         Log.w(TAG, "signInWithEmailAndPassword:failure", task.getException());
@@ -55,10 +55,6 @@ public class FireAuth {
                 }
             });
         }
-
-
-    }
-
     public void signUp(final UserModel user) {
         progressDialog.setMessage("loading...");
         progressDialog.show();

@@ -66,6 +66,7 @@ public class FireDatabase {
                     Intent intent = new Intent(context, HomePage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                    ((Activity)context).finish();
                     Toast.makeText(context, "success",
                             Toast.LENGTH_SHORT).show();
 

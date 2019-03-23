@@ -11,6 +11,8 @@ import com.example.bookaih.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.ButterKnife;
+
 public class HomePage extends AppCompatActivity  {
 
 
@@ -23,7 +25,7 @@ public class HomePage extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
-
+        ButterKnife.bind(this);
         REgbtn=(Button) findViewById(R.id.btn_reg_homepage);
         loginbtn2=(Button) findViewById(R.id.btn_login_homepage);
         wlc=(TextView) findViewById(R.id.view_wlc);
