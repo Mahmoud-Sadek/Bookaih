@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import com.example.bookaih.HomePage;
 import com.example.bookaih.model.IndividualModel;
-import com.example.bookaih.model.OrderModel;
+import com.example.bookaih.model.OrderIndividualModel;
 import com.example.bookaih.model.OrderWeddingModel;
 import com.example.bookaih.model.UserModel;
 import com.example.bookaih.model.WeddingModel;
@@ -106,7 +106,7 @@ public class FireDatabase {
             }
         });
     }
-    public void addOrderIndividual(final OrderModel model) {
+    public void addOrderIndividual(final OrderIndividualModel model) {
         progressDialog.show();
         String id = reference.push().getKey();
         model.setId(id);

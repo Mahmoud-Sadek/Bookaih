@@ -1,17 +1,14 @@
 package com.example.bookaih;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
 import com.example.bookaih.model.IndividualModel;
-import com.example.bookaih.model.OrderModel;
-import com.example.bookaih.model.WeddingModel;
+import com.example.bookaih.model.OrderIndividualModel;
 import com.example.bookaih.utils.OrderCommentDialog;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -62,7 +59,7 @@ public class DetailActivity extends AppCompatActivity {
         orderCommentDialog = new OrderCommentDialog(DetailActivity.this, new OrderCommentDialog.orderCommentAction() {
             @Override
             public void onGetComment(String code) {
-                OrderModel modelOrder = new OrderModel();
+                OrderIndividualModel modelOrder = new OrderIndividualModel();
                 modelOrder.setComment(code);
                 modelOrder.setItemId(model.getId());
                 modelOrder.setUserId(FirebaseAuth.getInstance().getUid());

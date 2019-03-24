@@ -55,6 +55,15 @@ public class Login extends AppCompatActivity {
     }
 
 
+    @OnClick(R.id.btn_reg_loginpage)
+    void btn_reg_loginpage() {
+        startActivity(new Intent(this, Register.class));
+    }
+
+    @OnClick(R.id.btn_forget_password)
+    void btn_forget_password() {
+    }
+
     @SuppressLint("NewApi")
     private Boolean validat() {
         boolean result = false;

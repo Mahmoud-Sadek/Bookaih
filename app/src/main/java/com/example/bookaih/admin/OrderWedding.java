@@ -28,9 +28,9 @@ public class OrderWedding extends AppCompatActivity {
     TextView emptyTV;
 
     AdminIndividualAdatpter adatpter;
-
-
     FireDatabase database;
+
+
 
 
     @Override

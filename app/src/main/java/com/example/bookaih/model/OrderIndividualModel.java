@@ -1,10 +1,10 @@
 package com.example.bookaih.model;
 
-public class OrderModel {
+public class OrderIndividualModel {
 
     String id="", itemId="",userId = "", comment="";
 
-    public OrderModel() {
+    public OrderIndividualModel() {
     }
 
     public String getId() {
