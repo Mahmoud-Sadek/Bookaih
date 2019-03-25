@@ -1,6 +1,5 @@
-package com.example.bookaih;
+package com.example.bookaih.admin;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -9,21 +8,22 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.bookaih.adapter.AdminWeddingAdatpter;
-import com.example.bookaih.adapter.WeddingAdatpter;
-import com.example.bookaih.admin.AddWedding;
+import com.example.bookaih.R;
+import com.example.bookaih.adapter.AdminIndividualAdatpter;
+import com.example.bookaih.adapter.OrderIndividualAdatpter;
+import com.example.bookaih.adapter.OrderWeddingAdatpter;
 import com.example.bookaih.firebase.FireDatabase;
-import com.example.bookaih.model.WeddingModel;
+import com.example.bookaih.model.IndividualModel;
+import com.example.bookaih.model.OrderIndividualModel;
+import com.example.bookaih.model.OrderWeddingModel;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class WeddingCategory extends AppCompatActivity {
-
+public class OrderWedding extends AppCompatActivity {
     @BindView(R.id.recycler)
     RecyclerView recycler;
     @BindView(R.id.loading)
@@ -31,28 +31,27 @@ public class WeddingCategory extends AppCompatActivity {
     @BindView(R.id.emptyTV)
     TextView emptyTV;
 
-    WeddingAdatpter adatpter;
-
-
+    OrderWeddingAdatpter adatpter;
     FireDatabase database;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_wedding_category);
+        setContentView(R.layout.activity_order_wedding);
         ButterKnife.bind(this);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 1);
         recycler.setLayoutManager(layoutManager);
 //        adatpter =  new IndividualAdatpter(this,new ArrayList<IndividualModel>());
 //        recycler.setAdapter(adatpter);
 
         database = new FireDatabase(this);
-        database.getWedding(new FireDatabase.WeddingCallback() {
+        database.getWeddingOrders(new FireDatabase.OrderWeddingCallback() {
             @Override
-            public void onCallback(ArrayList<WeddingModel> list) {
-
+            public void onCallback(ArrayList<OrderWeddingModel> list) {
                 if (list.size() == 0) {
                     loading.setVisibility(View.GONE);
                     emptyTV.setVisibility(View.VISIBLE);
@@ -60,16 +59,11 @@ public class WeddingCategory extends AppCompatActivity {
                     loading.setVisibility(View.GONE);
                     emptyTV.setVisibility(View.GONE);
                     Collections.reverse(list);
-                    adatpter = new WeddingAdatpter(getBaseContext(), list);
+                    adatpter = new OrderWeddingAdatpter(getBaseContext(), list);
                     recycler.setAdapter(adatpter);
-
                 }
-
             }
         });
 
     }
-
-
 }
-

@@ -10,7 +10,8 @@ import android.widget.Toast;
 
 import com.example.bookaih.HomePage;
 import com.example.bookaih.model.IndividualModel;
-import com.example.bookaih.model.OrderModel;
+import com.example.bookaih.model.MeetModel;
+import com.example.bookaih.model.OrderIndividualModel;
 import com.example.bookaih.model.OrderWeddingModel;
 import com.example.bookaih.model.UserModel;
 import com.example.bookaih.model.WeddingModel;
@@ -26,7 +27,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import static com.example.bookaih.utils.MyConstant.FIREBASE_INDIVIDUAL;
+import static com.example.bookaih.utils.MyConstant.FIREBASE_MEETING;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_ORDER;
+import static com.example.bookaih.utils.MyConstant.FIREBASE_UPCOMMING;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_USER;
 import static com.example.bookaih.utils.MyConstant.FIREBASE_WEDDING;
 
@@ -66,6 +69,7 @@ public class FireDatabase {
                     Intent intent = new Intent(context, HomePage.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                    ((Activity)context).finish();
                     Toast.makeText(context, "success",
                             Toast.LENGTH_SHORT).show();
 
@@ -105,7 +109,7 @@ public class FireDatabase {
             }
         });
     }
-    public void addOrderIndividual(final OrderModel model) {
+    public void addOrderIndividual(final OrderIndividualModel model) {
         progressDialog.show();
         String id = reference.push().getKey();
         model.setId(id);
@@ -129,7 +133,7 @@ public class FireDatabase {
             }
         });
     }
-public void addOrderWedding(final OrderWeddingModel model) {
+    public void addOrderWedding(final OrderWeddingModel model) {
         progressDialog.show();
         String id = reference.push().getKey();
         model.setId(id);
@@ -206,7 +210,6 @@ public void addOrderWedding(final OrderWeddingModel model) {
         });
     }
 
-
     public void editIndividual(IndividualModel model) {
         progressDialog.show();
         String id = model.getId();
@@ -233,7 +236,7 @@ public void addOrderWedding(final OrderWeddingModel model) {
 
     public void deleteIndividual(String id) {
         progressDialog.show();
-        reference.child(FIREBASE_INDIVIDUAL).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(FIREBASE_ORDER).child(FIREBASE_INDIVIDUAL).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -253,6 +256,8 @@ public void addOrderWedding(final OrderWeddingModel model) {
         });
 
     }
+
+
 
 
 
@@ -307,10 +312,9 @@ public void addOrderWedding(final OrderWeddingModel model) {
         });
     }
 
-
     public void deleteWeddig(String id) {
         progressDialog.show();
-        reference.child(FIREBASE_WEDDING).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.child(FIREBASE_ORDER).child(FIREBASE_WEDDING).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
@@ -331,10 +335,285 @@ public void addOrderWedding(final OrderWeddingModel model) {
     }
 
 
+
+    // this method for get all drivers from database
+    public void deleteMeeting(final String id, MeetModel model) {
+        progressDialog.show();
+
+        model.setId(id);
+        reference.child(FIREBASE_MEETING).child(MyConstant.FIREBASE_CANCELED).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.show();
+                    reference.child(FIREBASE_MEETING).child(FIREBASE_UPCOMMING).child(id).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                // Sign in success, update UI with the signed-in user's information
+                                progressDialog.dismiss();
+                                Toast.makeText(context, "Deleted!!",
+                                        Toast.LENGTH_SHORT).show();
+                                ((Activity)context).finish();
+                            } else {
+                                // If sign in fails, display a message to the user.
+                                progressDialog.dismiss();
+                                Log.w(TAG, "deleting :failure", task.getException());
+                                Toast.makeText(context, task.getException().getMessage(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+//                    Toast.makeText(context, "Success",
+//                            Toast.LENGTH_SHORT).show();
+//                    ((Activity)context).finish();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "adding :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+
+    }
+ // this method for get all drivers from database
+    public void getMeetingsCanceld(final MeetingCallback callback) {
+        final ArrayList<MeetModel> list = new ArrayList<>();
+        reference.child(FIREBASE_MEETING).child(MyConstant.FIREBASE_CANCELED).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            MeetModel model = snapshot.getValue(MeetModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+ // this method for get all drivers from database
+    public void getMeetingsUpcomming(final MeetingCallback callback) {
+        final ArrayList<MeetModel> list = new ArrayList<>();
+        reference.child(FIREBASE_MEETING).child(MyConstant.FIREBASE_UPCOMMING).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            MeetModel model = snapshot.getValue(MeetModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getUser(String userId,final UserCallback callback) {
+        reference.child(MyConstant.FIREBASE_USER).child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                        UserModel model = dataSnapshot.getValue(UserModel.class);
+                    callback.onCallback(model);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getIndiviualProduct(String productId,final IndividualProductCallback callback) {
+        reference.child(MyConstant.FIREBASE_INDIVIDUAL).child(productId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    IndividualModel model = dataSnapshot.getValue(IndividualModel.class);
+                    callback.onCallback(model);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+
+    public void addMeeting(final MeetModel model) {
+        progressDialog.show();
+        String id = reference.push().getKey();
+        model.setId(id);
+        reference.child(FIREBASE_MEETING).child(MyConstant.FIREBASE_UPCOMMING).child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Sign in success, update UI with the signed-in user's information
+                    progressDialog.dismiss();
+                    Toast.makeText(context, "Success",
+                            Toast.LENGTH_SHORT).show();
+                    ((Activity)context).finish();
+                } else {
+                    // If sign in fails, display a message to the user.
+                    progressDialog.dismiss();
+                    Log.w(TAG, "adding :failure", task.getException());
+                    Toast.makeText(context, task.getException().getMessage(),
+                            Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getWeddingProduct(String productId,final WeddingProductCallback callback) {
+        reference.child(MyConstant.FIREBASE_WEDDING).child(productId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    WeddingModel model = dataSnapshot.getValue(WeddingModel.class);
+                    callback.onCallback(model);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+
+
+
+    // this method for get all drivers from database
+    public void getWeddingOrders(final OrderWeddingCallback callback) {
+        final ArrayList<OrderWeddingModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_ORDER).child(MyConstant.FIREBASE_WEDDING).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            OrderWeddingModel model = snapshot.getValue(OrderWeddingModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+    // this method for get all drivers from database
+    public void getIndividualOrders(final OrderIndividualCallback callback) {
+        final ArrayList<OrderIndividualModel> list = new ArrayList<>();
+        reference.child(MyConstant.FIREBASE_ORDER).child(MyConstant.FIREBASE_INDIVIDUAL).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        if (snapshot.exists()) {
+                            OrderIndividualModel model = snapshot.getValue(OrderIndividualModel.class);
+                            list.add(model);
+                        }
+                    }
+                    callback.onCallback(list);
+                } else
+                    callback.onCallback(list);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+
+
     public interface IdividualCallback {
         void onCallback(ArrayList<IndividualModel> list);
     }
     public interface WeddingCallback {
         void onCallback(ArrayList<WeddingModel> list);
     }
+
+    public interface OrderWeddingCallback {
+        void onCallback(ArrayList<OrderWeddingModel> list);
+    }
+
+    public interface OrderIndividualCallback {
+        void onCallback(ArrayList<OrderIndividualModel> list);
+    }
+
+    public interface MeetingCallback {
+        void onCallback(ArrayList<MeetModel> list);
+    }
+
+    public interface WeddingProductCallback {
+        void onCallback(WeddingModel model);
+    }
+
+    public interface IndividualProductCallback {
+        void onCallback(IndividualModel model);
+    }
+
+    public interface OneOrderWeddingCallback {
+        void onCallback(OrderWeddingModel model);
+    }
+
+    public interface OneOrderIndividualCallback {
+        void onCallback(OrderIndividualModel model);
+    }
+
+    public interface UserCallback {
+        void onCallback(UserModel model);
+    }
+
+    public interface OneMeetCallback {
+        void onCallback(MeetModel model);
+    }
+
+
+
+
 }

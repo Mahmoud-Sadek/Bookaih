@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class UserModel implements Serializable {
 
-    String id="", name="", email="", image="", password="";
+    String id="", name="", email="", image="", password="", phone="";
 
     public UserModel() {
     }
@@ -50,4 +50,11 @@ public class UserModel implements Serializable {
         this.image = image;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }

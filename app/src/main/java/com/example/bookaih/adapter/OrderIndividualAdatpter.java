@@ -14,11 +14,14 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.bookaih.DetailActivity;
 import com.example.bookaih.R;
-import com.example.bookaih.WeddingDetailActivity;
-import com.example.bookaih.admin.UpdateWedding;
+import com.example.bookaih.admin.OrderIndividual;
+import com.example.bookaih.admin.OrderIndividualDetail;
+import com.example.bookaih.admin.OrderWeddingDetail;
 import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
-import com.example.bookaih.model.WeddingModel;
+import com.example.bookaih.model.IndividualModel;
+import com.example.bookaih.model.OrderIndividualModel;
+import com.example.bookaih.model.UserModel;
 
 import java.util.ArrayList;
 
@@ -26,14 +29,15 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class WeddingAdatpter extends RecyclerView.Adapter<WeddingAdatpter.ViewHolder> {
+public class OrderIndividualAdatpter extends RecyclerView.Adapter<OrderIndividualAdatpter.ViewHolder> {
 
+    private Context context;
+
+    private ArrayList<OrderIndividualModel> data;
     FireAuth auth;
     FireDatabase database;
-    private Context context;
-    private ArrayList<WeddingModel> data;
 
-    public WeddingAdatpter(Context context, ArrayList<WeddingModel> data) {
+    public OrderIndividualAdatpter(Context context, ArrayList<OrderIndividualModel> data) {
         this.context = context;
         this.data = data;
         auth = new FireAuth(context);
@@ -45,23 +49,32 @@ public class WeddingAdatpter extends RecyclerView.Adapter<WeddingAdatpter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_individual, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_order, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+
+        database.getUser(data.get(position).getUserId(), new FireDatabase.UserCallback() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, WeddingDetailActivity.class);
-                intent.putExtra("model", data.get(position));
-                context.startActivity(intent);
+            public void onCallback(UserModel model) {
+                holder.nameTV.setText(model.getName());
+                if (!model.getImage().isEmpty())
+                    Glide.with(context).load(model.getImage()).into(holder.photoIV);
+
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(context, OrderIndividualDetail.class);
+                        intent.putExtra("model", data.get(position));
+                        context.startActivity(intent);
+                    }
+                });
             }
         });
-        holder.nameTV.setText(data.get(position).getName());
-        holder.priceTxt.setText(data.get(position).getPrice() + " SAR");
-        Glide.with(context).load(data.get(position).getImage()).into(holder.photoIV);
 
 
     }
@@ -78,8 +91,7 @@ public class WeddingAdatpter extends RecyclerView.Adapter<WeddingAdatpter.ViewHo
         TextView nameTV;
         @BindView(R.id.photoIV)
         ImageView photoIV;
-        @BindView(R.id.priceTxt)
-        TextView priceTxt;
+
 
         private ViewHolder(View itemView) {
             super(itemView);

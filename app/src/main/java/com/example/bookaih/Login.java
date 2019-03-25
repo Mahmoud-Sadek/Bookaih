@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.bookaih.admin.AdminHome;
 import com.example.bookaih.firebase.FireAuth;
 import com.example.bookaih.firebase.FireDatabase;
 
@@ -47,9 +48,21 @@ public class Login extends AppCompatActivity {
         if (!validat()) {
             return;
         }
+        if (email_loginpage.getText().toString().equals("admin")&&password_loginpage.getText().toString().equals("admin123"))
+            startActivity(new Intent(this, AdminHome.class));
+        else
         auth.signIn(email_loginpage.getText().toString(), password_loginpage.getText().toString());
     }
 
+
+    @OnClick(R.id.btn_reg_loginpage)
+    void btn_reg_loginpage() {
+        startActivity(new Intent(this, Register.class));
+    }
+
+    @OnClick(R.id.btn_forget_password)
+    void btn_forget_password() {
+    }
 
     @SuppressLint("NewApi")
     private Boolean validat() {

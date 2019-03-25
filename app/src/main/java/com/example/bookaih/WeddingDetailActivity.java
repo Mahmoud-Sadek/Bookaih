@@ -7,11 +7,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.bookaih.firebase.FireDatabase;
-import com.example.bookaih.model.IndividualModel;
-import com.example.bookaih.model.OrderModel;
 import com.example.bookaih.model.OrderWeddingModel;
 import com.example.bookaih.model.WeddingModel;
-import com.example.bookaih.utils.OrderCommentDialog;
 import com.example.bookaih.utils.OrderWeddindCommentDialog;
 import com.google.firebase.auth.FirebaseAuth;
 

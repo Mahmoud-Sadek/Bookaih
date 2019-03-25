@@ -2,11 +2,11 @@ package com.example.bookaih.model;
 
 import java.io.Serializable;
 
-public class OrderWeddingModel implements Serializable {
+public class OrderIndividualModel implements Serializable {
 
-    String id="", itemId="",userId = "", comment="", date="", place="";
+    String id="", itemId="",userId = "", comment="";
 
-    public OrderWeddingModel() {
+    public OrderIndividualModel() {
     }
 
     public String getId() {
@@ -39,21 +39,5 @@ public class OrderWeddingModel implements Serializable {
 
     public void setComment(String comment) {
         this.comment = comment;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 }

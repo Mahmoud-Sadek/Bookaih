@@ -2,6 +2,7 @@ package com.example.bookaih;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,7 +36,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private EditText Fname;
     private EditText Lname;
     private EditText Email;
-    private EditText password;
+    private EditText password, phone_reg_page;
     CircleImageView profileImageCIV;
 
 
@@ -86,6 +87,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         Lname = findViewById(R.id.last_name);
         Email = findViewById(R.id.email_reg_page);
         password = findViewById(R.id.password_reg_page);
+        phone_reg_page = findViewById(R.id.phone_reg_page);
         profileImageCIV = findViewById(R.id.profileImageCIV);
 
         auth = new FireAuth(this);
@@ -97,29 +99,33 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         reg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (validat()) {
                     String email = Email.getText().toString().trim();
                     String name = Fname.getText().toString().trim() + " " + Lname.getText().toString().trim();
                     String passworduser = password.getText().toString().trim();
+                    String phoneuser = phone_reg_page.getText().toString().trim();
+
 
                     model.setName(name);
                     model.setEmail(email);
                     model.setPassword(passworduser);
+                    model.setPhone(phoneuser);
                     if (userImage != null) {
-                       /* final ProgressDialog progressDialog = new ProgressDialog(this);
+                        final ProgressDialog progressDialog = new ProgressDialog(Register.this);
                         progressDialog.setMessage("loading...");
-                        progressDialog.show();*/
+                        progressDialog.show();
                         storage.uploadImage(userImage, new FireStorage.urlCallback() {
                             @Override
                             public void onCallback(String url) {
+                                progressDialog.dismiss();
                                 Toast.makeText(Register.this, "url: " + url, Toast.LENGTH_SHORT).show();
                                 model.setImage(url);
                                 auth.signUp(model);
                             }
                         });
                     } else {
-                        Toast.makeText(Register.this, "لم يتم إختيار صورة ", Toast.LENGTH_SHORT).show();
+                        auth.signUp(model);
+
                     }
 
 
@@ -188,8 +194,9 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         String lname = Lname.getText().toString();
         String email = Email.getText().toString();
         String pass = password.getText().toString();
+        String phoneuser = phone_reg_page.getText().toString();
 
-        if (fname.isEmpty() || email.isEmpty() || pass.isEmpty()) {
+        if (fname.isEmpty() || email.isEmpty() || pass.isEmpty() || phoneuser.isEmpty()) {
             Toast.makeText(this, "Please Enter All Details!", Toast.LENGTH_SHORT).show();
         } else {
             result = true;

@@ -43,7 +43,7 @@ public class AdminIndividual extends AppCompatActivity {
         setContentView(R.layout.activity_admin_individual);
         ButterKnife.bind(this);
 
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recycler.setLayoutManager(layoutManager);
 //        adatpter =  new IndividualAdatpter(this,new ArrayList<IndividualModel>());
 //        recycler.setAdapter(adatpter);

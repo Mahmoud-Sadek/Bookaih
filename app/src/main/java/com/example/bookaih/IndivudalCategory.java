@@ -41,7 +41,7 @@ public class IndivudalCategory extends AppCompatActivity {
         setContentView(R.layout.activity_indivudal_category);
         ButterKnife.bind(this);
 
-        GridLayoutManager layoutManager =  new GridLayoutManager(this,3);
+        GridLayoutManager layoutManager =  new GridLayoutManager(this,2);
         recycler.setLayoutManager(layoutManager);
 //        adatpter =  new IndividualAdatpter(this,new ArrayList<IndividualModel>());
 //        recycler.setAdapter(adatpter);

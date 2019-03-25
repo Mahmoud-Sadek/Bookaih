@@ -8,17 +8,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.example.bookaih.MeetingActivity;
 import com.example.bookaih.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class OrderWeddindCommentDialog extends Dialog {
     orderCommentAction orderCommentAction;
     EditText commentInput, placeInput;
-    Button done, back,dateInput;
+    Button done, back, dateInput;
 
     public OrderWeddindCommentDialog(@NonNull final Context context, final orderCommentAction orderCommentAction) {
         super(context);
@@ -70,7 +73,10 @@ public class OrderWeddindCommentDialog extends Dialog {
                         myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         String myFormat = "MM-dd-yyyy"; //In which you need put here
                         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                        dateInput.setText(sdf.format(myCalendar.getTime()));
+                        if (myCalendar.getTime().before(new Date()))
+                            Toast.makeText(context, "وقت غير صالح", Toast.LENGTH_SHORT).show();
+                        else
+                            dateInput.setText(sdf.format(myCalendar.getTime()));
                     }
 
                 };
